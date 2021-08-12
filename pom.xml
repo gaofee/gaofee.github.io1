@@ -20,6 +20,15 @@
 
     <dependencies>
 
+        <!-- https://mvnrepository.com/artifact/com.aspose/aspose-words -->
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose-words</artifactId>
+            <version>15.10.0</version>
+        </dependency>
+
+
+
         <!--引入web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

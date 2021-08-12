@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * JwtToken生成的工具类
@@ -132,15 +133,21 @@ public class JwtTokenUtil<T> {
         return generateToken(claims);
     }
 
+    
     /**
      * 当原来的token没过期时是可以刷新的
      *
      * @param oldToken 带tokenHead的token
      */
-    public String refreshHeadToken(String oldToken) {
+    public /*synchronized*/ String refreshHeadToken(String oldToken) {
         if(StrUtil.isEmpty(oldToken)){
             return null;
         }
+        //同步代码块
+        /*synchronized (this){
+
+        }*/
+
         String token = oldToken.substring(tokenHead.length());
         if(StrUtil.isEmpty(token)){
             return null;
