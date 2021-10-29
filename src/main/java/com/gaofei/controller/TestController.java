@@ -5,6 +5,8 @@ import com.gaofei.domain.User;
 import jdk.nashorn.internal.parser.Token;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,7 +24,8 @@ import java.util.List;
 @Controller
 public class TestController {
 
-    @RequestMapping("/")
+    @RequestMapping("/test")
+    @ResponseBody
     public String test(String today,Model m){
 
         if(today==null|| today==""){
@@ -42,13 +45,14 @@ public class TestController {
 
     @RequestMapping("/login")
     @ResponseBody
-    public Object login(User portalUser, HttpServletResponse res, Model m){
+    public Object login(@RequestBody User portalUser, HttpServletResponse res, Model m){
         User dbUser = new User();
         dbUser.setId(1);
         dbUser.setPassword("123");
         dbUser.setUsername("lisi");
 
         if (portalUser.getUsername().equals(dbUser.getUsername()) && dbUser.getPassword().equals(portalUser.getPassword())) {
+            //登录成功
             JwtTokenUtil jwt = new JwtTokenUtil();
             String token = jwt.generateToken(dbUser);
             System.out.println(token+"***************");

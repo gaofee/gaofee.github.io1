@@ -25,7 +25,7 @@ import java.util.Map;
 public class LoginIntercepter implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse res, Object handler) throws Exception {
         String uri = request.getRequestURI();
 
         if(uri.indexOf("/login")>=0 ){
@@ -43,12 +43,15 @@ public class LoginIntercepter implements HandlerInterceptor {
                 responseData.put("message", "err request");
                 responseData.put("cause", "Token is empty");
                 // 将信息转换为 JSON,然后写到前台
-                PrintWriter out = response.getWriter();
+                PrintWriter out = res.getWriter();
                 ObjectMapper objectMapper = new ObjectMapper();
                 //Servlet不能直接返回json数据，需要转成JSONString
 
                 String info = objectMapper.writeValueAsString(responseData);
-
+                res.setHeader("Access-Control-Allow-Origin", "*");
+                res.setHeader("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+                res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials");
+                res.setHeader("Access-Control-Allow-Credentials", "true");
                 out.write(info);
 
 
@@ -60,23 +63,24 @@ public class LoginIntercepter implements HandlerInterceptor {
         }
 
         //然后验证token的合法性,比如是否过期,是否有效等
-        if(headerToken!=null){
             JwtTokenUtil<User> jwtTokenUtil = new JwtTokenUtil<>();
-            if(jwtTokenUtil.validateToken(headerToken)){
+        if(headerToken!=null&&jwtTokenUtil.validateToken(headerToken)){
                 // 封装正确信息
                 Map<String, Object> responseData = new HashMap();
                 responseData.put("code", 200);
                 responseData.put("message", "success");
                 responseData.put("cause", "Token is right");
                 // 将信息转换为 JSON,然后写到前台
-                PrintWriter out = response.getWriter();
+                PrintWriter out = res.getWriter();
                 ObjectMapper objectMapper = new ObjectMapper();
                 //Servlet不能直接返回json数据，需要转成JSONString
 
                 String info = objectMapper.writeValueAsString(responseData);
-
+                res.setHeader("Access-Control-Allow-Origin", "*");
+                res.setHeader("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+                res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials");
+                res.setHeader("Access-Control-Allow-Credentials", "true");
                 out.write(info);
-            };
             return true;
         }
         return false;
