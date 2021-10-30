@@ -37,6 +37,7 @@ public class LoginIntercepter implements HandlerInterceptor {
         if(headerToken==null||headerToken.equals("")){
             //不放行,并且返回401
             try {
+                //好
                 // 封装错误信息
                 Map<String, Object> responseData = new HashMap();
                 responseData.put("code", 401);
