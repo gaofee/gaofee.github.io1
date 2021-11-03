@@ -1,17 +1,24 @@
 package com.gaofei.controller;
 
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson.JSON;
 import com.gaofei.domain.JwtTokenUtil;
 import com.gaofei.domain.User;
-import jdk.nashorn.internal.parser.Token;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,22 +29,46 @@ import java.util.List;
 @Controller
 public class TestController {
 
-    @RequestMapping("/")
-    public String test(String today,Model m){
 
-        if(today==null|| today==""){
-            today=new Date().toString();
-        }
 
-        User user = new User();
-        user.setId(1);
-        user.setName("jake");
-        User user1 = new User();
-        user1.setName("rose");
-        user1.setId(2);
-        List<User> objects = Arrays.asList(user,user1);
-        m.addAttribute("users", objects);
-        return "hello";
+    @Value("${win.pdf.path}")
+    String winPath;
+    @Value("${linux.pdf.path}")
+    String linuxPath;
+
+    @RequestMapping("/httpdemo")
+    @ResponseBody
+    public String test(String today, Model m)  {
+
+
+//        String json = HttpUtil.post("http://127.0.0.1:9001/menu/findMenuByUid?uid="+3, "");
+
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("username", "admin");
+            map.put("password", "123456");
+            String json = HttpUtil.post("http://localhost:9001/user/login", JSON.toJSONString(map));
+
+            return json;
+
+
+
+
+        /*User u1 = new User();
+        User u2 = new User();
+        User u3 = new User();
+        u1.setUsername("gaofei");
+        u1.setId(1);
+        u2.setUsername("gaofei2");
+        u2.setId(2);
+        u3.setUsername("gaofei3");
+        u3.setId(3);
+        List<User> list = Arrays.asList(u1,u2,u3);
+        Document document = new Document();
+        document.open();
+        PdfWriter pw = PDFUtils.createDoc(document, winPath);
+        PDFUtils.addTable(pw, new String[]{"姓名", "id"}, new String[]{"username", "id"}, list);
+        document.close();*/
+
     }
 
     @RequestMapping("/login")

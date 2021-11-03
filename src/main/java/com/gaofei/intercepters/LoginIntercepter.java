@@ -63,21 +63,9 @@ public class LoginIntercepter implements HandlerInterceptor {
         if(headerToken!=null){
             JwtTokenUtil<User> jwtTokenUtil = new JwtTokenUtil<>();
             if(jwtTokenUtil.validateToken(headerToken)){
-                // 封装正确信息
-                Map<String, Object> responseData = new HashMap();
-                responseData.put("code", 200);
-                responseData.put("message", "success");
-                responseData.put("cause", "Token is right");
-                // 将信息转换为 JSON,然后写到前台
-                PrintWriter out = response.getWriter();
-                ObjectMapper objectMapper = new ObjectMapper();
-                //Servlet不能直接返回json数据，需要转成JSONString
-
-                String info = objectMapper.writeValueAsString(responseData);
-
-                out.write(info);
+               return true;//直接放行
             };
-            return true;
+
         }
         return false;
     }
