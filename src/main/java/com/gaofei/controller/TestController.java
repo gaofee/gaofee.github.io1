@@ -47,7 +47,7 @@ public class TestController {
         //1，配置
         WxMpInMemoryConfigStorage wxStorage = new WxMpInMemoryConfigStorage();
         wxStorage.setAppId("wx5bc2a5a44a16898f");
-        wxStorage.setSecret("b4ed2d0916d8bd0e60d065a096061509");
+        wxStorage.setSecret("b4ed2d0916d8bd0e60d0");
         WxMpService wxMpService = new WxMpServiceImpl();
         wxMpService.setWxMpConfigStorage(wxStorage);
 
